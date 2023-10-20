@@ -65,9 +65,9 @@ pub(crate) fn rotate_tokens(
     } else if atoken_expiring {
         info!("rotating access token...");
         let task = AsyncTask::new({
-            let refresh_token = keystore.refresh_token.clone();
+            let keystore = (*keystore).clone();
             let auth_provider = keygen.0.clone();
-            async move { auth_provider.refresh(refresh_token).await }
+            async move { auth_provider.refresh(keystore).await }
         })
         .with_timeout(settings.rotation_timeout);
         tr_rotate.start(task);

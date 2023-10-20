@@ -12,7 +12,7 @@ pub trait AuthProvider {
         username: String,
         password: String,
     ) -> Result<Keystore, TokenRotationError>;
-    async fn refresh(&self, refresh_token: String) -> Result<Keystore, TokenRotationError>;
+    async fn refresh(&self, keystore: Keystore) -> Result<Keystore, TokenRotationError>;
 }
 
 /// A wrapper around the auth provider used internally to perform auth.
@@ -28,7 +28,7 @@ pub enum KeystoreState {
     NonConformant,
 }
 
-#[derive(Resource, Debug)]
+#[derive(Resource, Debug, Clone)]
 pub struct Keystore {
     /// The latest username
     pub username: String,
@@ -52,19 +52,19 @@ pub struct Keystore {
 #[derive(Resource, Debug, Clone)]
 pub struct KeyRotationSettings {
     /// The amount of time an access token is valid for
-    pub(crate) access_valid_time: Duration,
+    pub access_valid_time: Duration,
 
     /// The amount of time a refresh token is valid for
-    pub(crate) refresh_valid_time: Duration,
+    pub refresh_valid_time: Duration,
 
     /// The amount of time before the rotation attempt times out
-    pub(crate) rotation_timeout: Duration,
+    pub rotation_timeout: Duration,
 
     /// The interval to check for rotation
-    pub(crate) rotation_check_interval: Duration,
+    pub rotation_check_interval: Duration,
 
     /// The amount of time to begin rotation before expiration
-    pub(crate) rotate_before: Duration,
+    pub rotate_before: Duration,
 }
 
 impl Default for KeyRotationSettings {
