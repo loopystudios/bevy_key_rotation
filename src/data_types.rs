@@ -12,7 +12,10 @@ pub trait AuthProvider {
         username: String,
         password: String,
     ) -> Result<Keystore, TokenRotationError>;
-    async fn refresh(&self, keystore: Keystore) -> Result<Keystore, TokenRotationError>;
+    async fn refresh(
+        &self,
+        keystore: Keystore,
+    ) -> Result<Keystore, TokenRotationError>;
 }
 
 /// A wrapper around the auth provider used internally to perform auth.
@@ -74,10 +77,10 @@ impl Default for KeyRotationSettings {
         // - Refresh token valid for 30 days
         // - Rotation attempt timeout is 10 seconds
         // - Re-attempt rotation, if necessary, every 60 seconds
-        // - Begin to attempt key rotation 5 minutes before expiration (55 min in)
+        // - Begin to attempt key rotation 5 minutes before expiration
         Self {
             access_valid_time: Duration::from_secs(60 * 60), // 1 hour
-            refresh_valid_time: Duration::from_secs(60 * 60 * 24 * 30), // 30 days
+            refresh_valid_time: Duration::from_secs(60 * 60 * 24 * 30), /* 30 days */
             rotation_timeout: Duration::from_secs(10),
             rotation_check_interval: Duration::from_secs(60),
             rotate_before: Duration::from_secs(60 * 5), // 5 min
