@@ -17,23 +17,6 @@ impl Plugin for KeyRotationPlugin {
     fn build(&self, app: &mut App) {
         info!("checking settings...");
         assert!(
-            self.rotation_settings.rotation_timeout
-                <= self.rotation_settings.rotation_check_interval,
-            "Invalid key rotation settings: rotation timeout must be shorter or equal than rotation interval"
-        );
-        assert!(
-            self.rotation_settings.access_valid_time > self.rotation_settings.rotate_before,
-            "Invalid key rotation settings: access token must be valid longer than time to rotate before expiration"
-        );
-        assert!(
-            self.rotation_settings.refresh_valid_time > self.rotation_settings.rotate_before,
-            "Invalid key rotation settings: refresh token must be valid longer than time to rotate before expiration"
-        );
-        assert!(
-            self.rotation_settings.access_valid_time < self.rotation_settings.refresh_valid_time,
-            "Invalid key rotation settings: access token is valid longer than refresh token"
-        );
-        assert!(
             self.rotation_settings.rotation_check_interval < self.rotation_settings.rotate_before,
             "Invalid key rotation settings: rotation interval must be smaller than than time to rotate before expiration"
         );

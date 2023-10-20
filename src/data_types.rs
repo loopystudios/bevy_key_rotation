@@ -54,12 +54,6 @@ pub struct Keystore {
 
 #[derive(Resource, Debug, Clone)]
 pub struct KeyRotationSettings {
-    /// The amount of time an access token is valid for
-    pub access_valid_time: Duration,
-
-    /// The amount of time a refresh token is valid for
-    pub refresh_valid_time: Duration,
-
     /// The amount of time before the rotation attempt times out
     pub rotation_timeout: Duration,
 
@@ -73,14 +67,10 @@ pub struct KeyRotationSettings {
 impl Default for KeyRotationSettings {
     fn default() -> Self {
         // Default settings:
-        // - Access token valid for 1 hour
-        // - Refresh token valid for 30 days
         // - Rotation attempt timeout is 10 seconds
         // - Re-attempt rotation, if necessary, every 60 seconds
         // - Begin to attempt key rotation 5 minutes before expiration
         Self {
-            access_valid_time: Duration::from_secs(60 * 60), // 1 hour
-            refresh_valid_time: Duration::from_secs(60 * 60 * 24 * 30), /* 30 days */
             rotation_timeout: Duration::from_secs(10),
             rotation_check_interval: Duration::from_secs(60),
             rotate_before: Duration::from_secs(60 * 5), // 5 min
