@@ -9,26 +9,4 @@ instant = "0.1"
 thiserror = "1.0"
 bevy-async-task = "1.2"
 async-trait = "0.1"
-bevy = { version = "0.11", default-features = false, features = [
-  "android_shared_stdcxx",
-  "animation",
-  "bevy_animation",
-  "bevy_asset",
-  "bevy_audio",
-  "bevy_core_pipeline",
-  "bevy_gilrs",
-  "bevy_render",
-  "bevy_scene",
-  "bevy_sprite",
-  "bevy_text",
-  "bevy_ui",
-  "bevy_winit",
-  "filesystem_watcher",
-  "hdr",
-  "ktx2",
-  "png",
-  "tonemapping_luts",
-  "vorbis",
-  "x11",
-  "zstd",
-] }
+bevy = { version = "0.11", default-features = false }
