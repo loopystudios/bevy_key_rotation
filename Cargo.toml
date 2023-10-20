@@ -10,3 +10,6 @@ thiserror = "1.0"
 bevy-async-task = "1.2"
 async-trait = "0.1"
 bevy = { version = "0.11", default-features = false }
+
+[target.'cfg(target_arch = "wasm32")'.dev-dependencies]
+wasm-bindgen-test = "0.3"

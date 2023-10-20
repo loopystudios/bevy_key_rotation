@@ -1,0 +1,70 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup | Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup | Toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        components: clippy,rustfmt
+
+    - name: Rust Cache
+      uses: Swatinem/rust-cache@v2.7.0
+
+    - name: Build | Clippy
+      uses: actions-rs/cargo@v1
+      with:
+        command: clippy
+        args: -- -D warnings
+
+    - name: Build | Rustfmt
+      run: cargo fmt --all -- --check
+
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup | Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup | Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: wasm32-unknown-unknown
+
+    - name: Rust Cache
+      uses: Swatinem/rust-cache@v2.7.0
+
+    - name: Build | Check (native)
+      run: cargo check --all
+
+    - name: Build | Check (wasm)
+      run: cargo check --target wasm32-unknown-unknown
+
+  test:
+    needs: [check]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup | Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup | Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: wasm32-unknown-unknown
+
+    - name: Setup | wasm-pack
+      uses: jetli/wasm-pack-action@v0.4.0
+
+    - name: Rust Cache
+      uses: Swatinem/rust-cache@v2.7.0
+
+    - name: Build | Test (native)
+      run: cargo test --all
+
+    - name: Build | Test (wasm)
+      run: wasm-pack test --node
