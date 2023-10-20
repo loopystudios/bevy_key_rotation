@@ -1,20 +1,19 @@
-use std::sync::Arc;
-
 use crate::{
     data_types::{AuthProvider, KeyRotationSettings, Keygen, KeystoreState},
     systems,
 };
 use bevy::prelude::*;
 use bevy_async_task::AsyncTask;
+use std::sync::Arc;
 
-pub struct ServerSyncPlugin {
+pub struct KeyRotationPlugin {
     pub username: String,
     pub password: String,
     pub rotation_settings: KeyRotationSettings,
     pub auth_provider: Arc<dyn AuthProvider + Send + Sync + 'static>,
 }
 
-impl Plugin for ServerSyncPlugin {
+impl Plugin for KeyRotationPlugin {
     fn build(&self, app: &mut App) {
         info!("checking settings...");
         assert!(

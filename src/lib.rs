@@ -3,4 +3,4 @@ mod error;
 mod plugin;
 mod systems;
 
-pub use plugin::ServerSyncPlugin;
+pub use plugin::KeyRotationPlugin;
