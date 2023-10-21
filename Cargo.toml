@@ -1,5 +1,10 @@
 [package]
 name = "bevy-key-rotation"
+description = "Access and refresh token rotation for Bevy applications"
+license = "MIT/Apache-2.0"
+repository = "https://github.com/vectorgameexperts/bevy-key-rotation"
+authors = ["Spencer C. Imbleau"]
+keywords = ["gamedev"]
 version = "1.0.0"
 edition = "2021"
 
