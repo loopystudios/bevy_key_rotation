@@ -3,7 +3,8 @@ mod error;
 mod plugin;
 mod systems;
 
-// Re-export instant
+// Re-exports
+pub use async_trait::async_trait;
 pub use instant::{Duration, Instant};
 
 pub use data_types::{
