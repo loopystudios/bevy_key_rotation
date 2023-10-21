@@ -21,8 +21,8 @@ impl AuthProvider for MyAuthProvider {
         Ok(Keystore {
             username,
             password,
-            access_token: "123".to_string(),
-            refresh_token: "456".to_string(),
+            access_token: random_token(),
+            refresh_token: random_token(),
             access_expires: bevy_key_rotation::Instant::now()
                 + Duration::from_secs(10),
             refresh_expires: bevy_key_rotation::Instant::now()
@@ -36,7 +36,7 @@ impl AuthProvider for MyAuthProvider {
         Ok(Keystore {
             username: keystore.username,
             password: keystore.password,
-            access_token: "789".to_string(),
+            access_token: random_token(),
             refresh_token: keystore.refresh_token,
             access_expires: keystore.access_expires + Duration::from_secs(5),
             refresh_expires: keystore.refresh_expires,
@@ -49,17 +49,25 @@ fn status_check(
     mut update_every: Local<Option<Timer>>,
     keystore: Res<Keystore>,
 ) {
-    // Print status every 2s
-    let update_every = update_every
-        .get_or_insert(Timer::from_seconds(2.0, TimerMode::Repeating));
+    // Print status every few seconds...
+    const PRINT_EVERY_SECONDS: f32 = 1.0;
+    let update_every = update_every.get_or_insert(Timer::from_seconds(
+        PRINT_EVERY_SECONDS,
+        TimerMode::Repeating,
+    ));
     update_every.tick(time.delta());
     if !update_every.finished() {
         return;
     }
-    update_every.reset();
 
     // Log current access token
-    log::info!("{:?}", *keystore);
+    log::info!(
+        token = keystore.access_token,
+        refresh_token = keystore.refresh_token,
+        "token valid for: {:.0?}, refresh token valid for: {:.0?}",
+        keystore.access_token_valid_for(),
+        keystore.refresh_token_valid_for(),
+    );
 }
 
 pub fn main() {
@@ -79,4 +87,13 @@ pub fn main() {
         })
         .add_systems(Update, status_check)
         .run();
+}
+
+fn random_token() -> String {
+    let mut token = vec![0; 6];
+    getrandom::getrandom(&mut token).unwrap();
+    for byte in token.as_mut_slice() {
+        *byte = (*byte % 26) + b'A'; // Convert to A-Z character
+    }
+    String::from_utf8(token).unwrap()
 }
