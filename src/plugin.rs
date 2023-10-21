@@ -37,7 +37,9 @@ impl Plugin for KeyRotationPlugin {
             .add_state::<KeystoreState>()
             .add_systems(
                 Update,
-                systems::rotate_tokens, // .run_if(state_exists_and_equals(KeystoreState::Conformant)),
+                (systems::rotate_tokens, systems::state_transfer)
+                    .chain()
+                    .run_if(state_exists_and_equals(KeystoreState::Conformant)),
             );
     }
 }
