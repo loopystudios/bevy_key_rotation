@@ -53,13 +53,15 @@ pub struct Keystore {
 }
 
 impl Keystore {
-    /// The amount of time the access token is valid for. A duration of zero means expired.
+    /// The amount of time the access token is valid for. A duration of zero
+    /// means expired.
     pub fn access_token_valid_for(&self) -> Duration {
         self.access_expires
             .saturating_duration_since(instant::Instant::now())
     }
 
-    /// The amount of time the refresh token is valid for. A duration of zero means expired.
+    /// The amount of time the refresh token is valid for. A duration of zero
+    /// means expired.
     pub fn refresh_token_valid_for(&self) -> Duration {
         self.refresh_expires
             .saturating_duration_since(instant::Instant::now())
