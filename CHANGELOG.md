@@ -4,6 +4,16 @@ This changelog follows the patterns described here: <https://keepachangelog.com/
 
 Subheadings to categorize changes are `added, changed, deprecated, removed, fixed, security`.
 
+## v1.2.0
+
+### added
+
+- `commands.start_key_rotation_with_keystore(keystore)` begins key rotation without blocking
+
+### fixed
+
+- On initial authentication, expired tokens no longer grant a `KeystoreState::Conformant` state
+
 ## v1.1.0
 
 ### added
