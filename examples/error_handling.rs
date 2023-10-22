@@ -7,7 +7,7 @@ use bevy_key_rotation::{
     AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore,
     KeystoreState, StartKeyRotationExt, TokenRotationError,
 };
-use std::{sync::Arc, time::Duration};
+use std::sync::Arc;
 
 pub struct MyAuthProvider;
 
@@ -24,9 +24,9 @@ impl AuthProvider for MyAuthProvider {
             access_token: "123".to_string(),
             refresh_token: "456".to_string(),
             access_expires: bevy_key_rotation::Instant::now()
-                + Duration::from_secs(20),
+                + bevy_key_rotation::Duration::from_secs(20),
             refresh_expires: bevy_key_rotation::Instant::now()
-                + Duration::from_secs(60),
+                + bevy_key_rotation::Duration::from_secs(60),
         })
     }
     async fn refresh(
@@ -56,8 +56,10 @@ fn status_check(
         return;
     }
 
-    if keystore.access_token_valid_for() < Duration::from_secs(5) {
-        log::error!("The keystore is about to be non-conformant!");
+    if keystore.access_token_valid_for()
+        < bevy_key_rotation::Duration::from_secs(5)
+    {
+        log::warn!("The keystore is about to be non-conformant!");
         // You could attempt to re-authenticate from scratch:
         // commands.start_key_rotation(username, password);
         // Or panic, or safe your system and prepare to exit, etc.

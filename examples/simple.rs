@@ -7,7 +7,7 @@ use bevy_key_rotation::{
     AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore,
     StartKeyRotationExt, TokenRotationError,
 };
-use std::{sync::Arc, time::Duration};
+use std::sync::Arc;
 
 pub struct MyAuthProvider;
 
@@ -24,9 +24,9 @@ impl AuthProvider for MyAuthProvider {
             access_token: random_token(),
             refresh_token: random_token(),
             access_expires: bevy_key_rotation::Instant::now()
-                + Duration::from_secs(10),
+                + bevy_key_rotation::Duration::from_secs(10),
             refresh_expires: bevy_key_rotation::Instant::now()
-                + Duration::from_secs(20),
+                + bevy_key_rotation::Duration::from_secs(20),
         })
     }
     async fn refresh(
@@ -38,7 +38,8 @@ impl AuthProvider for MyAuthProvider {
             password: keystore.password,
             access_token: random_token(),
             refresh_token: keystore.refresh_token,
-            access_expires: keystore.access_expires + Duration::from_secs(5),
+            access_expires: keystore.access_expires
+                + bevy_key_rotation::Duration::from_secs(5),
             refresh_expires: keystore.refresh_expires,
         })
     }
