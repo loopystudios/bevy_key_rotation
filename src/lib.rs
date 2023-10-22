@@ -10,7 +10,7 @@ pub use instant::{Duration, Instant};
 
 pub use commands::StartKeyRotationExt;
 pub use data_types::{
-    AuthProvider, KeyRotationSettings, Keystore, KeystoreState,
+    AuthProvider, KeyRotationSettings, Keygen, Keystore, KeystoreState,
 };
 pub use error::TokenRotationError;
 pub use plugin::KeyRotationPlugin;

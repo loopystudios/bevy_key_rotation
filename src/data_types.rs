@@ -18,9 +18,9 @@ pub trait AuthProvider {
     ) -> Result<Keystore, TokenRotationError>;
 }
 
-/// A wrapper around the auth provider used internally to perform auth.
+/// A resource around the auth provider used (mostly internally) to perform auth.
 #[derive(Resource)]
-pub(crate) struct Keygen(pub Arc<dyn AuthProvider + Send + Sync + 'static>);
+pub struct Keygen(pub Arc<dyn AuthProvider + Send + Sync + 'static>);
 
 #[derive(Debug, Default, Clone, Copy, Hash, PartialEq, Eq, States)]
 pub enum KeystoreState {
