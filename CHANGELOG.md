@@ -4,6 +4,12 @@ This changelog follows the patterns described here: <https://keepachangelog.com/
 
 Subheadings to categorize changes are `added, changed, deprecated, removed, fixed, security`.
 
+## v1.3.0
+
+### changed
+
+- `Kegen` resource is now public
+
 ## v1.2.0
 
 ### added
