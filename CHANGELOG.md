@@ -4,6 +4,12 @@ This changelog follows the patterns described here: <https://keepachangelog.com/
 
 Subheadings to categorize changes are `added, changed, deprecated, removed, fixed, security`.
 
+## v1.3.1
+
+### fixed
+
+- `AuthProvider` is now `?Send` on wasm32
+
 ## v1.3.0
 
 ### changed

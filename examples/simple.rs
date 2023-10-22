@@ -1,4 +1,3 @@
-use async_trait::async_trait;
 use bevy::{
     log::{self, LogPlugin},
     prelude::*,
@@ -11,7 +10,8 @@ use std::sync::Arc;
 
 pub struct MyAuthProvider;
 
-#[async_trait]
+#[cfg_attr(not(target_arch = "wasm32"), bevy_key_rotation::async_trait)]
+#[cfg_attr(target_arch = "wasm32", bevy_key_rotation::async_trait(?Send))]
 impl AuthProvider for MyAuthProvider {
     async fn authenticate(
         &self,
