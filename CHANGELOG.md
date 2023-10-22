@@ -13,7 +13,7 @@ Subheadings to categorize changes are `added, changed, deprecated, removed, fixe
 
 ### changed
 
-- `KeystoreState` now starts in `KeystoreState::Nonconformant` by default
+- `KeystoreState` now starts as `KeystoreState::NonConformant` by default
 
 ## v1.0.0
 
