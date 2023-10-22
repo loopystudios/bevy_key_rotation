@@ -19,14 +19,6 @@ There is full API support for **wasm** and **native**. Android and iOS are untes
 
 Please see [examples](examples/) for more.
 
-### Example
-
-Usage description
-
-```rust
-// TODO
-```
-
 ## License
 
 This project is dual-licensed under both [Apache 2.0](LICENSE-APACHE) and [MIT](LICENSE-MIT) licenses.
