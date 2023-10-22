@@ -5,7 +5,7 @@ use bevy::{
 };
 use bevy_key_rotation::{
     AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore,
-    KeystoreState, TokenRotationError,
+    KeystoreState, StartKeyRotationExt, TokenRotationError,
 };
 use std::{sync::Arc, time::Duration};
 
@@ -58,9 +58,9 @@ fn status_check(
 
     if keystore.access_token_valid_for() < Duration::from_secs(5) {
         log::error!("The keystore is about to be non-conformant!");
-        // You could attempt to re-authenticate from scratch by overriding the keystore:
-        // (*keystore) = MyAuthProvider.authenticate(...);
-        // Or react to this, perhaps safing your system and prepare to exit, etc.
+        // You could attempt to re-authenticate from scratch:
+        // commands.start_key_rotation(username, password);
+        // Or panic, or safe your system and prepare to exit, etc.
     }
 
     // Log current access token
@@ -77,8 +77,6 @@ pub fn main() {
     App::new()
         .add_plugins((MinimalPlugins, LogPlugin::default()))
         .add_plugins(KeyRotationPlugin {
-            username: "username".to_string(),
-            password: "password".to_string(),
             rotation_settings: KeyRotationSettings {
                 rotation_timeout: bevy_key_rotation::Duration::MAX, // no timeout
                 rotation_check_interval: bevy_key_rotation::Duration::from_secs(
@@ -88,13 +86,27 @@ pub fn main() {
             },
             auth_provider: Arc::new(MyAuthProvider),
         })
+        .add_systems(Startup, |mut commands: Commands| {
+            commands.start_key_rotation(
+                "username".to_string(),
+                "password".to_string(),
+            );
+        })
         .add_systems(
             Update,
             status_check
                 .run_if(state_exists_and_equals(KeystoreState::Conformant)),
         )
-        .add_systems(OnEnter(KeystoreState::NonConformant), || {
-            panic!("Keystore is now non-conformant! Keys cannot be updated.");
-        })
+        .add_systems(
+            OnTransition {
+                from: KeystoreState::Conformant,
+                to: KeystoreState::NonConformant,
+            },
+            || {
+                error!(
+                    "Keystore is now non-conformant! Keys cannot be rotated."
+                );
+            },
+        )
         .run();
 }

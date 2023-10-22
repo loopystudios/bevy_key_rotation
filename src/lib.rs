@@ -1,3 +1,4 @@
+mod commands;
 mod data_types;
 mod error;
 mod plugin;
@@ -7,6 +8,7 @@ mod systems;
 pub use async_trait::async_trait;
 pub use instant::{Duration, Instant};
 
+pub use commands::StartKeyRotationExt;
 pub use data_types::{
     AuthProvider, KeyRotationSettings, Keystore, KeystoreState,
 };

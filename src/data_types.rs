@@ -24,9 +24,9 @@ pub(crate) struct Keygen(pub Arc<dyn AuthProvider + Send + Sync + 'static>);
 
 #[derive(Debug, Default, Clone, Copy, Hash, PartialEq, Eq, States)]
 pub enum KeystoreState {
-    #[default]
     /// The keystore is valid.
     Conformant,
+    #[default]
     // The keystore is expired and cannot update.
     NonConformant,
 }

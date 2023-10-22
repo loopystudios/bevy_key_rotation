@@ -5,7 +5,7 @@ use bevy::{
 };
 use bevy_key_rotation::{
     AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore,
-    TokenRotationError,
+    StartKeyRotationExt, TokenRotationError,
 };
 use std::{sync::Arc, time::Duration};
 
@@ -74,8 +74,6 @@ pub fn main() {
     App::new()
         .add_plugins((MinimalPlugins, LogPlugin::default()))
         .add_plugins(KeyRotationPlugin {
-            username: "username".to_string(),
-            password: "password".to_string(),
             rotation_settings: KeyRotationSettings {
                 rotation_timeout: bevy_key_rotation::Duration::MAX, // no timeout
                 rotation_check_interval: bevy_key_rotation::Duration::from_secs(
@@ -84,6 +82,12 @@ pub fn main() {
                 rotate_before: bevy_key_rotation::Duration::from_secs(5),
             },
             auth_provider: Arc::new(MyAuthProvider),
+        })
+        .add_systems(Startup, |mut commands: Commands| {
+            commands.start_key_rotation(
+                "username".to_string(),
+                "password".to_string(),
+            );
         })
         .add_systems(Update, status_check)
         .run();
