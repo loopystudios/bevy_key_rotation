@@ -4,6 +4,18 @@ This changelog follows the patterns described here: <https://keepachangelog.com/
 
 Subheadings to categorize changes are `added, changed, deprecated, removed, fixed, security`.
 
+## Unreleased
+
+### changed
+
+- Changed `instant::{Duration, Instant}` to `web_time::{Duration, Instant}`
+
+## v1.4.0
+
+### changed
+
+- Updated to bevy 0.12
+
 ## v1.3.1
 
 ### fixed

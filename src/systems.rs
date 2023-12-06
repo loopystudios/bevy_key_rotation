@@ -1,13 +1,12 @@
 use crate::{
     data_types::{KeyRotationSettings, Keygen, Keystore},
     error::TokenRotationError,
-    KeystoreState,
+    Duration, KeystoreState,
 };
 use bevy::prelude::*;
 use bevy_async_task::{
     AsyncTask, AsyncTaskRunner, AsyncTaskStatus, TimeoutError,
 };
-use instant::Duration;
 
 pub(crate) fn rotate_tokens(
     keygen: Res<Keygen>,

@@ -1,9 +1,7 @@
-use std::sync::Arc;
-
-use crate::error::TokenRotationError;
+use crate::{error::TokenRotationError, Duration, Instant};
 use async_trait::async_trait;
 use bevy::prelude::*;
-use instant::{Duration, Instant};
+use std::sync::Arc;
 
 #[cfg_attr(not(target_arch = "wasm32"), async_trait)]
 #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]
@@ -19,7 +17,8 @@ pub trait AuthProvider {
     ) -> Result<Keystore, TokenRotationError>;
 }
 
-/// A resource around the auth provider used (mostly internally) to perform auth.
+/// A resource around the auth provider used (mostly internally) to perform
+/// auth.
 #[derive(Resource)]
 pub struct Keygen(pub Arc<dyn AuthProvider + Send + Sync + 'static>);
 
@@ -58,14 +57,14 @@ impl Keystore {
     /// means expired.
     pub fn access_token_valid_for(&self) -> Duration {
         self.access_expires
-            .saturating_duration_since(instant::Instant::now())
+            .saturating_duration_since(web_time::Instant::now())
     }
 
     /// The amount of time the refresh token is valid for. A duration of zero
     /// means expired.
     pub fn refresh_token_valid_for(&self) -> Duration {
         self.refresh_expires
-            .saturating_duration_since(instant::Instant::now())
+            .saturating_duration_since(web_time::Instant::now())
     }
 }
 
