@@ -9,6 +9,7 @@ Subheadings to categorize changes are `added, changed, deprecated, removed, fixe
 ### changed
 
 - Changed `instant::{Duration, Instant}` to `web_time::{Duration, Instant}`
+- Exposed `StopKeyRotationExt`
 
 ## v1.4.0
 
