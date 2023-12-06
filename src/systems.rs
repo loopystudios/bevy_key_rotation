@@ -1,5 +1,5 @@
 use crate::{
-    data_types::{KeyRotationSettings, Keygen, Keystore},
+    data_types::{KeyRotationEvent, KeyRotationSettings, Keygen, Keystore},
     error::TokenRotationError,
     Duration, KeystoreState,
 };
@@ -15,15 +15,16 @@ pub(crate) fn rotate_tokens(
     mut tr_rotate: AsyncTaskRunner<
         Result<Result<Keystore, TokenRotationError>, TimeoutError>,
     >,
+    mut event_writer: EventWriter<KeyRotationEvent>,
     mut rotation_timer: Local<Option<Timer>>,
     time: Res<Time>,
 ) {
     if let AsyncTaskStatus::Finished(resp) = tr_rotate.poll() {
         match resp {
             Ok(Ok(keys)) => {
-                *keystore = keys;
-                // todo send event
                 info!("token rotation successful");
+                *keystore = keys;
+                event_writer.send(KeyRotationEvent::Rotated(keystore.clone()));
             }
             err @ (Err(_) | Ok(Err(_))) => {
                 if let Err(_timeout) = err {
@@ -33,8 +34,8 @@ pub(crate) fn rotate_tokens(
                     );
                 } else if let Ok(Err(e)) = err {
                     warn!("key rotation failed: {e}");
+                    event_writer.send(KeyRotationEvent::FailedRotation(e));
                 }
-                // Todo send event for warnings
             }
         }
     }
@@ -77,11 +78,13 @@ pub(crate) fn rotate_tokens(
     }
 }
 
-pub fn state_transfer(
+pub(crate) fn state_transfer(
     mut token_state: ResMut<NextState<KeystoreState>>,
+    mut event_writer: EventWriter<KeyRotationEvent>,
     keystore: Res<Keystore>,
 ) {
     if keystore.access_token_valid_for() == Duration::ZERO {
         token_state.set(KeystoreState::NonConformant);
+        event_writer.send(KeyRotationEvent::Stopped);
     }
 }

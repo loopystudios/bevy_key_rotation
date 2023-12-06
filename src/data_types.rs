@@ -93,3 +93,16 @@ impl Default for KeyRotationSettings {
         }
     }
 }
+
+/// An event triggered for important key rotation events.
+#[derive(Event)]
+pub enum KeyRotationEvent {
+    /// Key rotation has started
+    Started(Keystore),
+    /// Keys were rotated successfully
+    Rotated(Keystore),
+    /// Tokens failed to rotate
+    FailedRotation(TokenRotationError),
+    /// Key rotation became non-conformant
+    Stopped,
+}

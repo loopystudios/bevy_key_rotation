@@ -6,6 +6,10 @@ Subheadings to categorize changes are `added, changed, deprecated, removed, fixe
 
 ## Unreleased
 
+### added
+
+- Added `KeyRotationEvent` events triggered on start, rotation, failure, and stoppage
+
 ### changed
 
 - Changed `instant::{Duration, Instant}` to `web_time::{Duration, Instant}`
