@@ -4,6 +4,12 @@ This changelog follows the patterns described here: <https://keepachangelog.com/
 
 Subheadings to categorize changes are `added, changed, deprecated, removed, fixed, security`.
 
+## Unreleased
+
+### fixed
+
+- `KeyRotationEvent` events are now in the plugin
+
 ## 1.4.1
 
 ### added
