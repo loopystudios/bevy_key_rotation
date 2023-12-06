@@ -8,7 +8,7 @@ mod systems;
 pub use async_trait::async_trait;
 pub use web_time::{Duration, Instant};
 
-pub use commands::StartKeyRotationExt;
+pub use commands::{StartKeyRotationExt, StopKeyRotationExt};
 pub use data_types::{
     AuthProvider, KeyRotationSettings, Keygen, Keystore, KeystoreState,
 };
