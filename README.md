@@ -12,7 +12,8 @@ There is full API support for **wasm** and **native**. Android and iOS are untes
 
 |bevy|bevy-key-rotation|
 |---|---|
-|0.12|1.4, main|
+|0.13|1.5, main|
+|0.12|1.4|
 |0.11|1.3|
 |<= 0.10|Unsupported|
 

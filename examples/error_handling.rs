@@ -96,8 +96,7 @@ pub fn main() {
         })
         .add_systems(
             Update,
-            status_check
-                .run_if(state_exists_and_equals(KeystoreState::Conformant)),
+            status_check.run_if(in_state(KeystoreState::Conformant)),
         )
         .add_systems(
             OnTransition {

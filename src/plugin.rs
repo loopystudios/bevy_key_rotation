@@ -19,13 +19,13 @@ impl Plugin for KeyRotationPlugin {
 
         app.insert_resource(self.rotation_settings.clone())
             .insert_resource(Keygen(self.auth_provider.clone()))
-            .add_state::<KeystoreState>()
+            .init_state::<KeystoreState>()
             .add_event::<KeyRotationEvent>()
             .add_systems(
                 Update,
                 (systems::rotate_tokens, systems::state_transfer)
                     .chain()
-                    .run_if(state_exists_and_equals(KeystoreState::Conformant)),
+                    .run_if(in_state(KeystoreState::Conformant)),
             );
     }
 }
