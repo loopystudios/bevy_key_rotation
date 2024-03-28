@@ -4,17 +4,13 @@ use crate::{
     Duration, KeystoreState,
 };
 use bevy::prelude::*;
-use bevy_async_task::{
-    AsyncTask, AsyncTaskRunner, AsyncTaskStatus, TimeoutError,
-};
+use bevy_async_task::{AsyncTask, AsyncTaskRunner, AsyncTaskStatus, TimeoutError};
 
 pub(crate) fn rotate_tokens(
     keygen: Res<Keygen>,
     settings: Res<KeyRotationSettings>,
     mut keystore: ResMut<Keystore>,
-    mut tr_rotate: AsyncTaskRunner<
-        Result<Result<Keystore, TokenRotationError>, TimeoutError>,
-    >,
+    mut tr_rotate: AsyncTaskRunner<Result<Result<Keystore, TokenRotationError>, TimeoutError>>,
     mut event_writer: EventWriter<KeyRotationEvent>,
     mut rotation_timer: Local<Option<Timer>>,
     time: Res<Time>,
@@ -51,10 +47,8 @@ pub(crate) fn rotate_tokens(
     rotation_timer.reset();
 
     // Check if rotation is necessary
-    let rtoken_expiring =
-        keystore.refresh_token_valid_for() < settings.rotate_before;
-    let atoken_expiring =
-        keystore.access_token_valid_for() < settings.rotate_before;
+    let rtoken_expiring = keystore.refresh_token_valid_for() < settings.rotate_before;
+    let atoken_expiring = keystore.access_token_valid_for() < settings.rotate_before;
 
     if rtoken_expiring {
         info!("rotating refresh token...");

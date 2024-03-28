@@ -3,8 +3,8 @@ use bevy::{
     prelude::*,
 };
 use bevy_key_rotation::{
-    AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore,
-    StartKeyRotationExt, TokenRotationError,
+    AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore, StartKeyRotationExt,
+    TokenRotationError,
 };
 use std::sync::Arc;
 
@@ -29,27 +29,19 @@ impl AuthProvider for MyAuthProvider {
                 + bevy_key_rotation::Duration::from_secs(20),
         })
     }
-    async fn refresh(
-        &self,
-        keystore: Keystore,
-    ) -> Result<Keystore, TokenRotationError> {
+    async fn refresh(&self, keystore: Keystore) -> Result<Keystore, TokenRotationError> {
         Ok(Keystore {
             username: keystore.username,
             password: keystore.password,
             access_token: random_token(),
             refresh_token: keystore.refresh_token,
-            access_expires: keystore.access_expires
-                + bevy_key_rotation::Duration::from_secs(5),
+            access_expires: keystore.access_expires + bevy_key_rotation::Duration::from_secs(5),
             refresh_expires: keystore.refresh_expires,
         })
     }
 }
 
-fn status_check(
-    time: Res<Time>,
-    mut update_every: Local<Option<Timer>>,
-    keystore: Res<Keystore>,
-) {
+fn status_check(time: Res<Time>, mut update_every: Local<Option<Timer>>, keystore: Res<Keystore>) {
     // Print status every few seconds...
     const PRINT_EVERY_SECONDS: f32 = 1.0;
     let update_every = update_every.get_or_insert(Timer::from_seconds(
@@ -77,18 +69,13 @@ pub fn main() {
         .add_plugins(KeyRotationPlugin {
             rotation_settings: KeyRotationSettings {
                 rotation_timeout: bevy_key_rotation::Duration::MAX, // no timeout
-                rotation_check_interval: bevy_key_rotation::Duration::from_secs(
-                    1,
-                ),
+                rotation_check_interval: bevy_key_rotation::Duration::from_secs(1),
                 rotate_before: bevy_key_rotation::Duration::from_secs(5),
             },
             auth_provider: Arc::new(MyAuthProvider),
         })
         .add_systems(Startup, |mut commands: Commands| {
-            commands.start_key_rotation(
-                "username".to_string(),
-                "password".to_string(),
-            );
+            commands.start_key_rotation("username".to_string(), "password".to_string());
         })
         .add_systems(Update, status_check)
         .run();

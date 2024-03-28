@@ -11,10 +11,7 @@ pub trait AuthProvider {
         username: String,
         password: String,
     ) -> Result<Keystore, TokenRotationError>;
-    async fn refresh(
-        &self,
-        keystore: Keystore,
-    ) -> Result<Keystore, TokenRotationError>;
+    async fn refresh(&self, keystore: Keystore) -> Result<Keystore, TokenRotationError>;
 }
 
 /// A resource around the auth provider used (mostly internally) to perform

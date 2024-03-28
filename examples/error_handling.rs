@@ -3,8 +3,8 @@ use bevy::{
     prelude::*,
 };
 use bevy_key_rotation::{
-    AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore,
-    KeystoreState, StartKeyRotationExt, TokenRotationError,
+    AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore, KeystoreState,
+    StartKeyRotationExt, TokenRotationError,
 };
 use std::sync::Arc;
 
@@ -29,10 +29,7 @@ impl AuthProvider for MyAuthProvider {
                 + bevy_key_rotation::Duration::from_secs(60),
         })
     }
-    async fn refresh(
-        &self,
-        _keystore: Keystore,
-    ) -> Result<Keystore, TokenRotationError> {
+    async fn refresh(&self, _keystore: Keystore) -> Result<Keystore, TokenRotationError> {
         #[derive(thiserror::Error, Default, Debug)]
         #[error("This fails on purpose!")]
         struct MyError;
@@ -40,11 +37,7 @@ impl AuthProvider for MyAuthProvider {
     }
 }
 
-fn status_check(
-    time: Res<Time>,
-    mut update_every: Local<Option<Timer>>,
-    keystore: Res<Keystore>,
-) {
+fn status_check(time: Res<Time>, mut update_every: Local<Option<Timer>>, keystore: Res<Keystore>) {
     // Print status every few seconds...
     const PRINT_EVERY_SECONDS: f32 = 1.0;
     let update_every = update_every.get_or_insert(Timer::from_seconds(
@@ -56,9 +49,7 @@ fn status_check(
         return;
     }
 
-    if keystore.access_token_valid_for()
-        < bevy_key_rotation::Duration::from_secs(5)
-    {
+    if keystore.access_token_valid_for() < bevy_key_rotation::Duration::from_secs(5) {
         log::warn!("The keystore is about to be non-conformant!");
         // You could attempt to re-authenticate from scratch:
         // commands.start_key_rotation(username, password);
@@ -81,18 +72,13 @@ pub fn main() {
         .add_plugins(KeyRotationPlugin {
             rotation_settings: KeyRotationSettings {
                 rotation_timeout: bevy_key_rotation::Duration::MAX, // no timeout
-                rotation_check_interval: bevy_key_rotation::Duration::from_secs(
-                    5,
-                ),
+                rotation_check_interval: bevy_key_rotation::Duration::from_secs(5),
                 rotate_before: bevy_key_rotation::Duration::from_secs(15),
             },
             auth_provider: Arc::new(MyAuthProvider),
         })
         .add_systems(Startup, |mut commands: Commands| {
-            commands.start_key_rotation(
-                "username".to_string(),
-                "password".to_string(),
-            );
+            commands.start_key_rotation("username".to_string(), "password".to_string());
         })
         .add_systems(
             Update,
@@ -104,9 +90,7 @@ pub fn main() {
                 to: KeystoreState::NonConformant,
             },
             || {
-                error!(
-                    "Keystore is now non-conformant! Keys cannot be rotated."
-                );
+                error!("Keystore is now non-conformant! Keys cannot be rotated.");
             },
         )
         .run();
