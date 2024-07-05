@@ -1,5 +1,5 @@
 use crate::{data_types::Keygen, KeyRotationEvent, Keystore, KeystoreState};
-use bevy::{ecs::system::Command, prelude::*};
+use bevy::{ecs::world::Command, prelude::*};
 use bevy_async_task::AsyncTask;
 
 struct StartKeyRotation {

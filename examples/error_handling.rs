@@ -1,7 +1,4 @@
-use bevy::{
-    log::{self, LogPlugin},
-    prelude::*,
-};
+use bevy::{log::LogPlugin, prelude::*};
 use bevy_key_rotation::{
     AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore, KeystoreState,
     StartKeyRotationExt, TokenRotationError,
@@ -50,14 +47,14 @@ fn status_check(time: Res<Time>, mut update_every: Local<Option<Timer>>, keystor
     }
 
     if keystore.access_token_valid_for() < bevy_key_rotation::Duration::from_secs(5) {
-        log::warn!("The keystore is about to be non-conformant!");
+        warn!("The keystore is about to be non-conformant!");
         // You could attempt to re-authenticate from scratch:
         // commands.start_key_rotation(username, password);
         // Or panic, or safe your system and prepare to exit, etc.
     }
 
     // Log current access token
-    log::info!(
+    info!(
         token = keystore.access_token,
         refresh_token = keystore.refresh_token,
         "token valid for: {:.0?}, refresh token valid for: {:.0?}",
@@ -86,8 +83,8 @@ pub fn main() {
         )
         .add_systems(
             OnTransition {
-                from: KeystoreState::Conformant,
-                to: KeystoreState::NonConformant,
+                exited: KeystoreState::Conformant,
+                entered: KeystoreState::NonConformant,
             },
             || {
                 error!("Keystore is now non-conformant! Keys cannot be rotated.");

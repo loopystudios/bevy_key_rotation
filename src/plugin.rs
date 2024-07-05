@@ -2,7 +2,7 @@ use crate::{
     data_types::{AuthProvider, KeyRotationSettings, Keygen, KeystoreState},
     systems, KeyRotationEvent,
 };
-use bevy::prelude::*;
+use bevy::{prelude::*, state::app::StatesPlugin};
 use std::sync::Arc;
 
 pub struct KeyRotationPlugin {
@@ -17,6 +17,9 @@ impl Plugin for KeyRotationPlugin {
             "Invalid key rotation settings: rotation interval must be smaller than than time to rotate before expiration"
         );
 
+        if !app.is_plugin_added::<StatesPlugin>() {
+            app.add_plugins(StatesPlugin);
+        }
         app.insert_resource(self.rotation_settings.clone())
             .insert_resource(Keygen(self.auth_provider.clone()))
             .init_state::<KeystoreState>()

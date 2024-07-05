@@ -1,7 +1,4 @@
-use bevy::{
-    log::{self, LogPlugin},
-    prelude::*,
-};
+use bevy::{log::LogPlugin, prelude::*};
 use bevy_key_rotation::{
     AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore, StartKeyRotationExt,
     TokenRotationError,
@@ -54,7 +51,7 @@ fn status_check(time: Res<Time>, mut update_every: Local<Option<Timer>>, keystor
     }
 
     // Log current access token
-    log::info!(
+    info!(
         token = keystore.access_token,
         refresh_token = keystore.refresh_token,
         "token valid for: {:.0?}, refresh token valid for: {:.0?}",
