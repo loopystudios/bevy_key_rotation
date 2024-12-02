@@ -10,6 +10,18 @@ Subheadings to categorize changes are `added, changed, deprecated, removed, fixe
 
 ## Unreleased
 
+## 0.3.1
+
+### Fixed
+
+- Elides some unnecessary lifetimes
+
+## 0.3.0
+
+### Changed
+
+- Updated to bevy 0.15
+
 ## 0.2.0
 
 ### Changed

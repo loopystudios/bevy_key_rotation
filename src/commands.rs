@@ -59,7 +59,7 @@ pub trait StartKeyRotationExt {
     fn start_key_rotation_with_keystore(&mut self, keystore: Keystore);
 }
 
-impl<'w, 's> StartKeyRotationExt for Commands<'w, 's> {
+impl StartKeyRotationExt for Commands<'_, '_> {
     fn start_key_rotation(&mut self, username: String, password: String) {
         self.queue(StartKeyRotation { username, password })
     }
@@ -84,7 +84,7 @@ pub trait StopKeyRotationExt {
     fn stop_key_rotation(&mut self);
 }
 
-impl<'w, 's> StopKeyRotationExt for Commands<'w, 's> {
+impl StopKeyRotationExt for Commands<'_, '_> {
     fn stop_key_rotation(&mut self) {
         self.queue(StopKeyRotation);
     }
