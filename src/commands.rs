@@ -1,6 +1,5 @@
 use crate::{data_types::Keygen, KeyRotationEvent, Keystore, KeystoreState};
 use bevy::{ecs::world::Command, prelude::*};
-use bevy_async_task::AsyncTask;
 
 struct StartKeyRotation {
     username: String,
@@ -11,13 +10,13 @@ impl Command for StartKeyRotation {
     fn apply(self, world: &mut bevy::prelude::World) {
         info!("starting key rotation, authenticating credentials...");
         let keygen = world.resource::<Keygen>();
-        let keystore = AsyncTask::new({
+
+        let keystore = bevy::tasks::block_on({
             let username = self.username.clone();
             let password = self.password.clone();
             let auth_provider = keygen.0.clone();
             async move { auth_provider.authenticate(username, password).await }
         })
-        .blocking_recv()
         .unwrap();
         info!("credentials authenticated!");
         if keystore.access_token_valid_for() > crate::Duration::ZERO {
@@ -62,10 +61,10 @@ pub trait StartKeyRotationExt {
 
 impl<'w, 's> StartKeyRotationExt for Commands<'w, 's> {
     fn start_key_rotation(&mut self, username: String, password: String) {
-        self.add(StartKeyRotation { username, password })
+        self.queue(StartKeyRotation { username, password })
     }
     fn start_key_rotation_with_keystore(&mut self, keystore: Keystore) {
-        self.add(StartKeyRotationWithKeystore { keystore })
+        self.queue(StartKeyRotationWithKeystore { keystore })
     }
 }
 
@@ -87,6 +86,6 @@ pub trait StopKeyRotationExt {
 
 impl<'w, 's> StopKeyRotationExt for Commands<'w, 's> {
     fn stop_key_rotation(&mut self) {
-        self.add(StopKeyRotation);
+        self.queue(StopKeyRotation);
     }
 }
