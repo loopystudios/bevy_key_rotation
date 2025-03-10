@@ -4,14 +4,14 @@ use crate::{
     Duration, KeystoreState,
 };
 use bevy::prelude::*;
-use bevy_async_task::{AsyncTask, AsyncTaskRunner, TaskError};
+use bevy_async_task::{TimedAsyncTask, TimedTaskRunner};
 use std::task::Poll;
 
 pub(crate) fn rotate_tokens(
     keygen: Res<Keygen>,
     settings: Res<KeyRotationSettings>,
     mut keystore: ResMut<Keystore>,
-    mut tr_rotate: AsyncTaskRunner<Result<Result<Keystore, TokenRotationError>, TaskError>>,
+    mut tr_rotate: TimedTaskRunner<Result<Keystore, TokenRotationError>>,
     mut event_writer: EventWriter<KeyRotationEvent>,
     mut rotation_timer: Local<Option<Timer>>,
     time: Res<Time>,
@@ -53,7 +53,7 @@ pub(crate) fn rotate_tokens(
 
     if rtoken_expiring {
         info!("rotating refresh token...");
-        let task = AsyncTask::new_with_timeout(settings.rotation_timeout, {
+        let task = TimedAsyncTask::new(settings.rotation_timeout, {
             let username = keystore.username.clone();
             let password = keystore.password.clone();
             let auth_provider = keygen.0.clone();
@@ -62,7 +62,7 @@ pub(crate) fn rotate_tokens(
         tr_rotate.start(task);
     } else if atoken_expiring {
         info!("rotating access token...");
-        let task = AsyncTask::new_with_timeout(settings.rotation_timeout, {
+        let task = TimedAsyncTask::new(settings.rotation_timeout, {
             let keystore = (*keystore).clone();
             let auth_provider = keygen.0.clone();
             async move { auth_provider.refresh(keystore).await }

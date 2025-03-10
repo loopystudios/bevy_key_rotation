@@ -10,6 +10,12 @@ Subheadings to categorize changes are `added, changed, deprecated, removed, fixe
 
 ## Unreleased
 
+## 0.4.0
+
+### Changed
+
+- Updated to bevy_async_task 0.5
+
 ## 0.3.1
 
 ### Fixed
