@@ -21,7 +21,7 @@ pub(crate) fn rotate_tokens(
             Ok(Ok(keys)) => {
                 info!("token rotation successful");
                 *keystore = keys;
-                event_writer.send(KeyRotationEvent::Rotated(keystore.clone()));
+                event_writer.write(KeyRotationEvent::Rotated(keystore.clone()));
             }
             err @ (Err(_) | Ok(Err(_))) => {
                 if let Err(_timeout) = err {
@@ -31,7 +31,7 @@ pub(crate) fn rotate_tokens(
                     );
                 } else if let Ok(Err(e)) = err {
                     warn!("key rotation failed: {e}");
-                    event_writer.send(KeyRotationEvent::FailedRotation(e));
+                    event_writer.write(KeyRotationEvent::FailedRotation(e));
                 }
             }
         }
@@ -78,6 +78,6 @@ pub(crate) fn state_transfer(
 ) {
     if keystore.access_token_valid_for() == Duration::ZERO {
         token_state.set(KeystoreState::NonConformant);
-        event_writer.send(KeyRotationEvent::Stopped);
+        event_writer.write(KeyRotationEvent::Stopped);
     }
 }

@@ -80,7 +80,7 @@ pub fn main() {
 
 fn random_token() -> String {
     let mut token = vec![0; 6];
-    getrandom::getrandom(&mut token).unwrap();
+    getrandom::fill(&mut token).unwrap();
     for byte in token.as_mut_slice() {
         *byte = (*byte % 26) + b'A'; // Convert to A-Z character
     }

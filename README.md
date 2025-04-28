@@ -12,7 +12,8 @@ There is full API support for **wasm** and **native**. Android and iOS are untes
 
 |bevy|bevy_key_rotation|
 |---|---|
-|0.15|0.3-0.4, main|
+|0.16|0.5, main|
+|0.15|0.3-0.4|
 |0.14|0.2|
 |0.13|0.1|
 |< 0.13|Unsupported|
@@ -21,6 +22,25 @@ There is full API support for **wasm** and **native**. Android and iOS are untes
 
 Please see [examples](examples/) for more.
 
+## Community
+
+All Loopy projects and development happens in the [Loopy Discord](https://discord.gg/KSfKceUKde). The discord is open to the public.
+
+Contributions are welcome by pull request. The [Rust code of conduct](https://www.rust-lang.org/policies/code-of-conduct) applies.
+
 ## License
 
-This project is dual-licensed under both [Apache 2.0](LICENSE-APACHE) and [MIT](LICENSE-MIT) licenses.
+Licensed under either of
+
+- Apache License, Version 2.0
+   ([LICENSE-APACHE](LICENSE-APACHE) or <http://www.apache.org/licenses/LICENSE-2.0>)
+- MIT license
+   ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
+
+at your option
+
+## Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+dual licensed as above, without any additional terms or conditions.
