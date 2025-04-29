@@ -1,4 +1,4 @@
-use crate::{error::TokenRotationError, Duration, Instant};
+use crate::{Duration, Instant, error::TokenRotationError};
 use async_trait::async_trait;
 use bevy::prelude::*;
 use std::sync::Arc;

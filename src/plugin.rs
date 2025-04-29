@@ -1,6 +1,7 @@
 use crate::{
+    KeyRotationEvent,
     data_types::{AuthProvider, KeyRotationSettings, Keygen, KeystoreState},
-    systems, KeyRotationEvent,
+    systems,
 };
 use bevy::{prelude::*, state::app::StatesPlugin};
 use std::sync::Arc;

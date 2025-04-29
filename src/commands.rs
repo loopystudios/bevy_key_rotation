@@ -1,4 +1,4 @@
-use crate::{data_types::Keygen, KeyRotationEvent, Keystore, KeystoreState};
+use crate::{KeyRotationEvent, Keystore, KeystoreState, data_types::Keygen};
 use bevy::prelude::*;
 
 struct StartKeyRotation {
@@ -24,7 +24,9 @@ impl Command for StartKeyRotation {
             state.set(KeystoreState::Conformant);
             world.send_event(KeyRotationEvent::Started(keystore.clone()));
         } else {
-            warn!("auth provider authenticated, but returned an expired access token, remaining nonconformant");
+            warn!(
+                "auth provider authenticated, but returned an expired access token, remaining nonconformant"
+            );
         }
         world.insert_resource(keystore);
     }
