@@ -20,7 +20,16 @@ There is full API support for **wasm** and **native**. Android and iOS are untes
 
 ## Usage
 
-Please see [examples](examples/) for more.
+There are several [examples](examples/) for reference.
+
+You can also run examples on web:
+
+```shell
+# Make sure the Rust toolchain supports the wasm32 target
+rustup target add wasm32-unknown-unknown
+
+cargo run_wasm --example simple
+```
 
 ## Community
 
