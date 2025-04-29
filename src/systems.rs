@@ -1,7 +1,7 @@
 use crate::{
+    Duration, KeystoreState,
     data_types::{KeyRotationEvent, KeyRotationSettings, Keygen, Keystore},
     error::TokenRotationError,
-    Duration, KeystoreState,
 };
 use bevy::prelude::*;
 use bevy_async_task::{TimedAsyncTask, TimedTaskRunner};
