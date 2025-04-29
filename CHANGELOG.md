@@ -10,6 +10,12 @@ Subheadings to categorize changes are `added, changed, deprecated, removed, fixe
 
 ## Unreleased
 
+## 0.5.1
+
+### Fixed
+
+- Fixed a panic on WASM by updating the version of `bevy_async_task`.
+
 ## 0.5.0
 
 ### Changed
