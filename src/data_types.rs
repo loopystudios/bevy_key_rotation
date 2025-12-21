@@ -1,7 +1,11 @@
-use crate::{Duration, Instant, error::TokenRotationError};
+use std::sync::Arc;
+
 use async_trait::async_trait;
 use bevy::prelude::*;
-use std::sync::Arc;
+
+use crate::Duration;
+use crate::Instant;
+use crate::error::TokenRotationError;
 
 #[cfg_attr(not(target_arch = "wasm32"), async_trait)]
 #[cfg_attr(target_arch = "wasm32", async_trait(?Send))]

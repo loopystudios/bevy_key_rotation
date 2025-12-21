@@ -6,11 +6,15 @@ mod systems;
 
 // Re-exports
 pub use async_trait::async_trait;
-pub use web_time::{Duration, Instant};
-
-pub use commands::{StartKeyRotationExt, StopKeyRotationExt};
-pub use data_types::{
-    AuthProvider, KeyRotationEvent, KeyRotationSettings, Keygen, Keystore, KeystoreState,
-};
+pub use commands::StartKeyRotationExt;
+pub use commands::StopKeyRotationExt;
+pub use data_types::AuthProvider;
+pub use data_types::KeyRotationEvent;
+pub use data_types::KeyRotationSettings;
+pub use data_types::Keygen;
+pub use data_types::Keystore;
+pub use data_types::KeystoreState;
 pub use error::TokenRotationError;
 pub use plugin::KeyRotationPlugin;
+pub use web_time::Duration;
+pub use web_time::Instant;

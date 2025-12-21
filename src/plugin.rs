@@ -1,10 +1,14 @@
-use crate::{
-    KeyRotationEvent,
-    data_types::{AuthProvider, KeyRotationSettings, Keygen, KeystoreState},
-    systems,
-};
-use bevy::{prelude::*, state::app::StatesPlugin};
 use std::sync::Arc;
+
+use bevy::prelude::*;
+use bevy::state::app::StatesPlugin;
+
+use crate::KeyRotationEvent;
+use crate::data_types::AuthProvider;
+use crate::data_types::KeyRotationSettings;
+use crate::data_types::Keygen;
+use crate::data_types::KeystoreState;
+use crate::systems;
 
 pub struct KeyRotationPlugin {
     pub rotation_settings: KeyRotationSettings,

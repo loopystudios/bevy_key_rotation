@@ -1,9 +1,14 @@
-use bevy::{log::LogPlugin, prelude::*};
-use bevy_key_rotation::{
-    AuthProvider, KeyRotationPlugin, KeyRotationSettings, Keystore, KeystoreState,
-    StartKeyRotationExt, TokenRotationError,
-};
 use std::sync::Arc;
+
+use bevy::log::LogPlugin;
+use bevy::prelude::*;
+use bevy_key_rotation::AuthProvider;
+use bevy_key_rotation::KeyRotationPlugin;
+use bevy_key_rotation::KeyRotationSettings;
+use bevy_key_rotation::Keystore;
+use bevy_key_rotation::KeystoreState;
+use bevy_key_rotation::StartKeyRotationExt;
+use bevy_key_rotation::TokenRotationError;
 
 pub struct MyAuthProvider;
 

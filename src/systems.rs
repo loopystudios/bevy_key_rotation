@@ -1,11 +1,16 @@
-use crate::{
-    Duration, KeystoreState,
-    data_types::{KeyRotationEvent, KeyRotationSettings, Keygen, Keystore},
-    error::TokenRotationError,
-};
-use bevy::prelude::*;
-use bevy_async_task::{TimedAsyncTask, TimedTaskRunner};
 use std::task::Poll;
+
+use bevy::prelude::*;
+use bevy_async_task::TimedAsyncTask;
+use bevy_async_task::TimedTaskRunner;
+
+use crate::Duration;
+use crate::KeystoreState;
+use crate::data_types::KeyRotationEvent;
+use crate::data_types::KeyRotationSettings;
+use crate::data_types::Keygen;
+use crate::data_types::Keystore;
+use crate::error::TokenRotationError;
 
 pub(crate) fn rotate_tokens(
     keygen: Res<Keygen>,

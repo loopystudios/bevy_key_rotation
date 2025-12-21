@@ -1,5 +1,9 @@
-use crate::{KeyRotationEvent, Keystore, KeystoreState, data_types::Keygen};
 use bevy::prelude::*;
+
+use crate::KeyRotationEvent;
+use crate::Keystore;
+use crate::KeystoreState;
+use crate::data_types::Keygen;
 
 struct StartKeyRotation {
     username: String,
