@@ -15,9 +15,9 @@ use crate::error::TokenRotationError;
 pub(crate) fn rotate_tokens(
     keygen: Res<Keygen>,
     settings: Res<KeyRotationSettings>,
+    mut commands: Commands,
     mut keystore: ResMut<Keystore>,
     mut tr_rotate: TimedTaskRunner<Result<Keystore, TokenRotationError>>,
-    mut event_writer: EventWriter<KeyRotationEvent>,
     mut rotation_timer: Local<Option<Timer>>,
     time: Res<Time>,
 ) {
@@ -26,7 +26,7 @@ pub(crate) fn rotate_tokens(
             Ok(Ok(keys)) => {
                 info!("token rotation successful");
                 *keystore = keys;
-                event_writer.write(KeyRotationEvent::Rotated(keystore.clone()));
+                commands.trigger(KeyRotationEvent::Rotated(keystore.clone()));
             }
             err @ (Err(_) | Ok(Err(_))) => {
                 if let Err(_timeout) = err {
@@ -36,7 +36,7 @@ pub(crate) fn rotate_tokens(
                     );
                 } else if let Ok(Err(e)) = err {
                     warn!("key rotation failed: {e}");
-                    event_writer.write(KeyRotationEvent::FailedRotation(e));
+                    commands.trigger(KeyRotationEvent::FailedRotation(e));
                 }
             }
         }
@@ -47,7 +47,7 @@ pub(crate) fn rotate_tokens(
         TimerMode::Once,
     ));
     rotation_timer.tick(time.delta());
-    if !rotation_timer.finished() {
+    if !rotation_timer.is_finished() {
         return;
     }
     rotation_timer.reset();
@@ -77,12 +77,12 @@ pub(crate) fn rotate_tokens(
 }
 
 pub(crate) fn state_transfer(
+    mut commands: Commands,
     mut token_state: ResMut<NextState<KeystoreState>>,
-    mut event_writer: EventWriter<KeyRotationEvent>,
     keystore: Res<Keystore>,
 ) {
     if keystore.access_token_valid_for() == Duration::ZERO {
         token_state.set(KeystoreState::NonConformant);
-        event_writer.write(KeyRotationEvent::Stopped);
+        commands.trigger(KeyRotationEvent::Stopped);
     }
 }

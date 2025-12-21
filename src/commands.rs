@@ -26,7 +26,9 @@ impl Command for StartKeyRotation {
         if keystore.access_token_valid_for() > crate::Duration::ZERO {
             let mut state = world.resource_mut::<NextState<KeystoreState>>();
             state.set(KeystoreState::Conformant);
-            world.send_event(KeyRotationEvent::Started(keystore.clone()));
+            world
+                .commands()
+                .trigger(KeyRotationEvent::Started(keystore.clone()));
         } else {
             warn!(
                 "auth provider authenticated, but returned an expired access token, remaining nonconformant"
@@ -48,7 +50,9 @@ impl Command for StartKeyRotationWithKeystore {
         if keystore.access_token_valid_for() > crate::Duration::ZERO {
             let mut state = world.resource_mut::<NextState<KeystoreState>>();
             state.set(KeystoreState::Conformant);
-            world.send_event(KeyRotationEvent::Started(self.keystore.clone()));
+            world
+                .commands()
+                .trigger(KeyRotationEvent::Started(self.keystore.clone()));
         } else {
             warn!("started key rotation with an expired keystore, remaining nonconformant");
         }
@@ -78,10 +82,10 @@ struct StopKeyRotation;
 
 impl Command for StopKeyRotation {
     fn apply(self, world: &mut bevy::prelude::World) {
+        info!("stopping key rotation");
         let mut state = world.resource_mut::<NextState<KeystoreState>>();
         state.set(KeystoreState::NonConformant);
-        world.send_event(KeyRotationEvent::Stopped);
-        info!("stopping key rotation");
+        world.commands().trigger(KeyRotationEvent::Stopped);
     }
 }
 

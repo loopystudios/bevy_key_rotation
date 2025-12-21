@@ -3,7 +3,6 @@ use std::sync::Arc;
 use bevy::prelude::*;
 use bevy::state::app::StatesPlugin;
 
-use crate::KeyRotationEvent;
 use crate::data_types::AuthProvider;
 use crate::data_types::KeyRotationSettings;
 use crate::data_types::Keygen;
@@ -28,7 +27,6 @@ impl Plugin for KeyRotationPlugin {
         app.insert_resource(self.rotation_settings.clone())
             .insert_resource(Keygen(self.auth_provider.clone()))
             .init_state::<KeystoreState>()
-            .add_event::<KeyRotationEvent>()
             .add_systems(
                 Update,
                 (systems::rotate_tokens, systems::state_transfer)

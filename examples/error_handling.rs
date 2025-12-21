@@ -47,7 +47,7 @@ fn status_check(time: Res<Time>, mut update_every: Local<Option<Timer>>, keystor
         TimerMode::Repeating,
     ));
     update_every.tick(time.delta());
-    if !update_every.finished() {
+    if !update_every.is_finished() {
         return;
     }
 
@@ -73,7 +73,7 @@ pub fn main() {
         .add_plugins((MinimalPlugins, LogPlugin::default()))
         .add_plugins(KeyRotationPlugin {
             rotation_settings: KeyRotationSettings {
-                rotation_timeout: bevy_key_rotation::Duration::MAX, // no timeout
+                rotation_timeout: bevy_async_task::MAX_TIMEOUT, // no timeout
                 rotation_check_interval: bevy_key_rotation::Duration::from_secs(5),
                 rotate_before: bevy_key_rotation::Duration::from_secs(15),
             },
