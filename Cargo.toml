@@ -9,16 +9,16 @@ license = "Apache-2.0 OR MIT"
 repository = "https://github.com/loopystudios/bevy_key_rotation"
 authors = ["Spencer Imbleau"]
 keywords = ["gamedev"]
-version = "0.6.0"
+version = "0.7.0"
 edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 web-time = "1.1.0"
-thiserror = "2.0.17"
-bevy_async_task = "0.11.0"
+thiserror = "2.0.18"
+bevy_async_task = "0.12.0"
 async-trait = "0.1.89"
-bevy = { version = "0.17.3", default-features = false, features = [
+bevy = { version = "0.18.0", default-features = false, features = [
   "bevy_state",
   "bevy_log",
 ] }
@@ -27,5 +27,5 @@ bevy = { version = "0.17.3", default-features = false, features = [
 getrandom = { version = "0.3.4" }
 
 [target.'cfg(target_arch = "wasm32")'.dev-dependencies]
-wasm-bindgen-test = "0.3.56"
-getrandom = { version = "0.3.2", features = ["wasm_js"] }
+wasm-bindgen-test = "0.3.58"
+getrandom = { version = "0.3.4", features = ["wasm_js"] }
